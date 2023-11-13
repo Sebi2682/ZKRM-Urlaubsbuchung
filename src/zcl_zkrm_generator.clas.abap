@@ -32,6 +32,7 @@ CLASS ZCL_ZKRM_GENERATOR IMPLEMENTATION.
     employee-first_name = 'Hans'.
     employee-surname = 'Maier'.
     employee-entry_date = '20000501'.
+    employee-employee_uuid = cl_system_uuid=>create_uuid_x16_static( ).
 
     APPEND employee TO employees .
 
@@ -43,6 +44,7 @@ CLASS ZCL_ZKRM_GENERATOR IMPLEMENTATION.
     employee-first_name = 'Lisa'.
     employee-surname = 'Müller'.
     employee-entry_date = '20100701'.
+    employee-employee_uuid = cl_system_uuid=>create_uuid_x16_static( ).
 
     APPEND employee TO employees .
 
@@ -54,6 +56,7 @@ CLASS ZCL_ZKRM_GENERATOR IMPLEMENTATION.
     employee-first_name = 'Petra'.
     employee-surname = 'Schmid'.
     employee-entry_date = '20221001'.
+    employee-employee_uuid = cl_system_uuid=>create_uuid_x16_static( ).
 
     APPEND employee TO employees .
     INSERT ZKRM_employee FROM TABLE @employees.
@@ -78,6 +81,7 @@ CLASS ZCL_ZKRM_GENERATOR IMPLEMENTATION.
     HolidayEntitlement-employee = '1'.
     HolidayEntitlement-entitlement_year = '2022'.
     HolidayEntitlement-vacation_days = '30'.
+    HolidayEntitlement-holidayentitlement_uuid   = cl_system_uuid=>create_uuid_x16_static( ).
 
     APPEND HolidayEntitlement TO Holidayentitlements.
 
@@ -88,6 +92,7 @@ CLASS ZCL_ZKRM_GENERATOR IMPLEMENTATION.
     HolidayEntitlement-employee = '1'.
     HolidayEntitlement-entitlement_year = '2023'.
     HolidayEntitlement-vacation_days = '30'.
+    HolidayEntitlement-holidayentitlement_uuid   = cl_system_uuid=>create_uuid_x16_static( ).
 
     APPEND HolidayEntitlement TO Holidayentitlements.
 
@@ -99,10 +104,9 @@ CLASS ZCL_ZKRM_GENERATOR IMPLEMENTATION.
     HolidayEntitlement-employee = '2'.
     HolidayEntitlement-entitlement_year = '2023'.
     HolidayEntitlement-vacation_days = '30'.
+    HolidayEntitlement-holidayentitlement_uuid   = cl_system_uuid=>create_uuid_x16_static( ).
 
     APPEND HolidayEntitlement TO Holidayentitlements.
-
-
 
     GET TIME STAMP FIELD HolidayEntitlement-created_at.
     GET TIME STAMP FIELD HolidayEntitlement-last_changed_at.
@@ -111,6 +115,7 @@ CLASS ZCL_ZKRM_GENERATOR IMPLEMENTATION.
     HolidayEntitlement-employee = '3'.
     HolidayEntitlement-entitlement_year = '2023'.
     HolidayEntitlement-vacation_days = '7'.
+    HolidayEntitlement-holidayentitlement_uuid   = cl_system_uuid=>create_uuid_x16_static( ).
 
     APPEND HolidayEntitlement TO Holidayentitlements.
 
@@ -136,6 +141,8 @@ CLASS ZCL_ZKRM_GENERATOR IMPLEMENTATION.
     VacationRequest-end_date = '20220710'.
     VacationRequest-status = 'G'.
     VacationRequest-request_comment = 'Sommerurlaub'.
+    VacationRequest-vacrequest_uuid = cl_system_uuid=>create_uuid_x16_static( ).
+
 
     APPEND VacationRequest TO VacationRequests .
 
@@ -153,6 +160,7 @@ CLASS ZCL_ZKRM_GENERATOR IMPLEMENTATION.
     VacationRequest-end_date = '20221230'.
     VacationRequest-status = 'A'.
     VacationRequest-request_comment = 'Weihnachtsurlaub'.
+    VacationRequest-vacrequest_uuid = cl_system_uuid=>create_uuid_x16_static( ).
 
     APPEND VacationRequest TO VacationRequests .
 
@@ -170,6 +178,7 @@ CLASS ZCL_ZKRM_GENERATOR IMPLEMENTATION.
     VacationRequest-end_date = '20221230'.
     VacationRequest-status = 'G'.
     VacationRequest-request_comment = 'Weihnachtsurlaub (2. Versuch)'.
+    VacationRequest-vacrequest_uuid = cl_system_uuid=>create_uuid_x16_static( ).
 
     APPEND VacationRequest TO VacationRequests .
 
@@ -187,6 +196,7 @@ CLASS ZCL_ZKRM_GENERATOR IMPLEMENTATION.
     VacationRequest-end_date = '20230614'.
     VacationRequest-status = 'G'.
     VacationRequest-request_comment = ''.
+    VacationRequest-vacrequest_uuid = cl_system_uuid=>create_uuid_x16_static( ).
 
     APPEND VacationRequest TO VacationRequests .
 
@@ -204,6 +214,7 @@ CLASS ZCL_ZKRM_GENERATOR IMPLEMENTATION.
     VacationRequest-end_date = '20231231'.
     VacationRequest-status = 'B'.
     VacationRequest-request_comment = 'Winterurlaub'.
+    VacationRequest-vacrequest_uuid = cl_system_uuid=>create_uuid_x16_static( ).
 
     APPEND VacationRequest TO VacationRequests .
 
@@ -221,6 +232,7 @@ CLASS ZCL_ZKRM_GENERATOR IMPLEMENTATION.
     VacationRequest-end_date = '20231231'.
     VacationRequest-status = 'B'.
     VacationRequest-request_comment = 'Weihnachtsurlaub'.
+    VacationRequest-vacrequest_uuid = cl_system_uuid=>create_uuid_x16_static( ).
 
     APPEND VacationRequest TO VacationRequests .
 

@@ -1,0 +1,13 @@
+managed implementation in class zbp_r_zkrm_employee_view unique;
+strict ( 2 );
+
+define behavior for ZR_ZKRM_EMPLOYEE_VIEW //alias <alias_name>
+persistent table zkrm_employee
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create;
+  update;
+  delete;
+}

@@ -1,4 +1,4 @@
 @EndUserText.label: 'Employee Service Definition'
 define service ZUI_ZKRM_EMPLOYEE {
-  expose ZC_ZKRM_EMPLOYEE as Employee;
+  expose ZC_KRM_EMPLOYEE as Employee;
 }
