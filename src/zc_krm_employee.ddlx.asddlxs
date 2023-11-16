@@ -1,10 +1,4 @@
 @Metadata.layer: #CUSTOMER
-@UI.headerInfo:
-{ 
-typeNamePlural: 'Employees',
-typeName: 'Employee',
-title.value: 'Id'
-}
 annotate view ZC_KRM_EMPLOYEE with 
 {
   /* Facets */
@@ -26,26 +20,20 @@ annotate view ZC_KRM_EMPLOYEE with
     EmployeeNumber;
     
     @UI.lineItem: [{ position: 30 }]
-    @UI.selectionField: [{ position: 20 }]
     @UI.fieldGroup: [{ position: 30, qualifier: 'EmployeeDetails' }]
     FirstName;
     
     @UI.lineItem: [{ position: 40 }]
-    @UI.selectionField: [{ position: 30 }]
     @UI.fieldGroup: [{ position: 40, qualifier: 'EmployeeDetails' }]
     Surname;
     
     @UI.lineItem: [{ position: 50 }]
-    @UI.selectionField: [{ position: 40 }]
+    @UI.selectionField: [{ position: 20 }]
     @UI.fieldGroup: [{ position: 50, qualifier: 'EmployeeDetails' }]
     EntryDate;
     
 //  Administrative Data
     
-    @UI.fieldGroup: [{ position: 60, qualifier: 'AdminData' }]
-    EmployeeUuid;
-    
-
     @UI.fieldGroup: [{ position: 70, qualifier: 'AdminData' }]
     CreatedBy;
     
@@ -61,6 +49,4 @@ annotate view ZC_KRM_EMPLOYEE with
     @UI.fieldGroup: [{ position: 100, qualifier: 'AdminData' }]
     LastChangedAt;
     
-
-
 }

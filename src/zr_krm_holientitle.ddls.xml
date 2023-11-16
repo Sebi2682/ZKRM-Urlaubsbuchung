@@ -3,9 +3,9 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DDLS>
-    <DDLNAME>ZR_KRM_EMPLOYEEVIEW</DDLNAME>
+    <DDLNAME>ZR_KRM_HOLIENTITLE</DDLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
-    <DDTEXT>Employee base view</DDTEXT>
+    <DDTEXT>Holiday Entitlement Base View</DDTEXT>
     <SOURCE_TYPE>W</SOURCE_TYPE>
    </DDLS>
   </asx:values>
