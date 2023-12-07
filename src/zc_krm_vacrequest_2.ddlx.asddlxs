@@ -1,0 +1,73 @@
+@Metadata.layer: #CUSTOMER
+@UI.headerInfo:
+{
+  typeName: 'VacationRequest',
+  typeNamePlural: 'VacactionRequests',
+  title.value: 'Id',
+  description.value: 'RequestComment'
+
+}
+annotate view ZC_KRM_VACREQUEST_2 with
+{
+
+  /* Facets */
+  @UI.facet:
+  [
+    { position: 10, targetQualifier: 'VacationRequestDetails', label: 'Employee Details', type: #FIELDGROUP_REFERENCE },
+    { position: 20, targetQualifier: 'AdminData', label: 'Administrative Data', type: #FIELDGROUP_REFERENCE }
+    //{ position: 20,  } actions beide hinzufügen
+  ]
+
+    /* Fields */
+     @UI.lineItem: [{ position: 20 }]
+       @UI.selectionField: [{ position: 10 }]
+    @UI.fieldGroup: [{ position: 20, qualifier: 'VacationRequestDetails' }]
+      @EndUserText: { label: 'Applicant', quickInfo: 'Applicant' }
+    ApplicantName;
+    
+    @UI.lineItem: [{ position: 30 }]
+    @UI.fieldGroup: [{ position: 30, qualifier: 'VacationRequestDetails' }]
+    @EndUserText: { label: 'Approver', quickInfo: 'Approver' }
+    ApproverName;
+
+    
+     @UI.lineItem: [{ position: 40 }]
+    @UI.fieldGroup: [{ position: 40, qualifier: 'VacationRequestDetails' }]
+      @EndUserText: { label: 'Start Date', quickInfo: 'Start Date' }
+    StartDate;
+    
+    @UI.lineItem: [{ position: 50 }]
+    @UI.fieldGroup: [{ position: 50, qualifier: 'VacationRequestDetails' }]
+      @EndUserText: { label: 'End Date', quickInfo: 'End Date ' }
+    EndDate;
+    
+    @UI.lineItem: [{ position: 60, criticality: 'StatusCriticality', criticalityRepresentation: #WITH_ICON}]
+    @UI.dataPoint: { criticality:'StatusCriticality'}
+    @UI.selectionField: [{ position: 30 }]
+    @UI.fieldGroup: [{ position: 60, qualifier: 'VacationRequestDetails' }]
+    @EndUserText: { label: 'Status', quickInfo: 'Status' }
+    Status;
+    
+    @UI.hidden: true
+    StatusCriticality; 
+    
+    @UI.lineItem: [{ position: 70 }]
+    @UI.fieldGroup: [{ position: 70, qualifier: 'VacationRequestDetails' }]
+    @EndUserText: { label: 'Request Comment', quickInfo: 'Request Comment' }
+    RequestComment;
+  
+    //Administrative Data
+    @UI.fieldGroup: [{ position: 80, qualifier: 'AdminData' }]
+    CreatedBy;
+    
+    @UI.fieldGroup: [{ position: 90, qualifier: 'AdminData' }]
+    CreatedAt;
+    
+    @UI.fieldGroup: [{ position: 100, qualifier: 'AdminData' }]
+    LastChangedBy;
+    
+    @UI.fieldGroup: [{ position: 110, qualifier: 'AdminData' }]
+    LastChangedAt;
+
+
+}

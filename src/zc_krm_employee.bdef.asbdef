@@ -1,0 +1,28 @@
+projection;
+strict ( 2 );
+
+define behavior for ZC_KRM_EMPLOYEE //alias <alias_name>
+{
+  use create;
+  use update;
+  use delete;
+
+  use association _HOLIENTITLES { create; }
+  use association _VACREQUESTS { create; }
+}
+
+define behavior for ZC_KRM_HOLIENTITLE //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _Employeeview;
+}
+
+define behavior for ZC_KRM_VACREQUEST //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _applicant;
+}

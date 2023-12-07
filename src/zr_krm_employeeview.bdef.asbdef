@@ -1,0 +1,115 @@
+managed implementation in class zbp_r_krm_employeeview unique;
+strict ( 2 );
+
+define behavior for ZR_KRM_EMPLOYEEVIEW alias Employee
+persistent table zkrm_employee
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create;
+  update;
+  delete;
+
+  association _HOLIENTITLES { create; }
+  association _VACREQUESTS { create; }
+
+  field ( readonly, numbering : managed ) Id;
+
+  field ( readonly ) CreatedAt;
+  field ( readonly ) CreatedBy;
+  field ( readonly ) LastChangedAt;
+  field ( readonly ) LastChangedBy;
+
+  mapping for zkrm_employee corresponding
+    {
+      Id             = id;
+      EmployeeNumber = employee_number;
+      FirstName      = first_name;
+      Surname        = surname;
+      EntryDate      = entry_date;
+      CreatedBy      = created_by;
+      CreatedAt      = created_at;
+      LastChangedBy  = last_changed_by;
+      LastChangedAt  = last_changed_at;
+    }
+}
+
+
+
+define behavior for ZR_KRM_HOLIENTITLE alias HolidayEntitlement
+persistent table zkrm_holientitle
+lock dependent by _Employeeview
+authorization dependent by _Employeeview
+//etag master <field_name>
+{
+  update;
+  delete;
+
+  association _EmployeeView;
+
+  field ( readonly ) Employee;
+  field ( readonly, numbering : managed ) Id;
+
+  field ( readonly ) CreatedAt;
+  field ( readonly ) CreatedBy;
+  field ( readonly ) LastChangedAt;
+  field ( readonly ) LastChangedBy;
+
+  mapping for zkrm_holientitle corresponding
+    {
+      Id              = id;
+      Employee        = employee;
+      EntitlementYear = entitlement_year;
+      VacationDays    = vacation_days;
+      CreatedBy       = created_by;
+      CreatedAt       = created_at;
+      LastChangedBy   = last_changed_by;
+      LastChangedAt   = last_changed_at;
+    }
+}
+
+
+
+define behavior for zr_krm_vacrequest alias vacrequest
+persistent table zkrm_vacrequest
+lock dependent by _applicant
+authorization dependent by _applicant
+//etag master <field_name>
+{
+  update;
+  delete;
+
+  association _applicant;
+  association _approver;
+
+  action DeclineVacationRequest result [1] $self;
+  action ApproveVacationRequest result [1] $self;
+
+  validation ValidateDates on save { create; }
+  validation ValidateVacDays on save { create; }
+
+  determination DetermineStatus on modify { field approver, startdate, enddate, RequestComment;}
+  determination DetermineVacationDays on modify { field startdate, enddate; }
+
+  field ( readonly, numbering : managed ) id;
+  field ( mandatory : create ) Approver, StartDate, EndDate;
+  field ( readonly ) Applicant, CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, Status, vacationdays;
+
+  mapping for zkrm_vacrequest corresponding
+  {
+  Id = id;
+  Applicant = applicant;
+  Approver = approver;
+  StartDate = start_date;
+  EndDate = end_date;
+  Status = status;
+  RequestComment =request_comment;
+  CreatedBy = created_by;
+  CreatedAt =created_at;
+  LastChangedBy = last_changed_by;
+  LastChangedAt = last_changed_at;
+  vacationdays = vacation_days;
+  }
+
+}

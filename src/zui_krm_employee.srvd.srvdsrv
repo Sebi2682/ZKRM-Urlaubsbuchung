@@ -1,4 +1,6 @@
 @EndUserText.label: 'Employee Service Definition'
 define service ZUI_krm_employee {
-  expose ZC_KRM_EMPLOYEE as Employee;
+  expose ZC_KRM_EMPLOYEE    as Employees;
+  expose ZC_KRM_HOLIENTITLE as HolidayEntitlements;
+  expose ZC_KRM_VACREQUEST  as VacationRequests;
 }
