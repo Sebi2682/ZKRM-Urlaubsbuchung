@@ -1,4 +1,5 @@
 @EndUserText.label: 'Vacation Request View 2'
+@Search.searchable: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @Metadata.allowExtensions: true
 define view entity ZC_KRM_VACREQUEST_2 as projection on zr_krm_vacrequest
@@ -24,8 +25,8 @@ define view entity ZC_KRM_VACREQUEST_2 as projection on zr_krm_vacrequest
   LastChangedAt,
   
   /* Transient Data */
-  ApplicantName,
   @Consumption.valueHelpDefinition: [{ entity: { name: 'zi_krm_employeetext', element: 'Name' } }]
+  ApplicantName,
   ApproverName,
   StatusCriticality,
   

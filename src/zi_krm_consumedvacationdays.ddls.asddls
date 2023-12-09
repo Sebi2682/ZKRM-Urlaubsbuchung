@@ -6,7 +6,7 @@ define view entity zi_krm_consumedvacationdays as select from zkrm_vacrequest
      sum(
         case when end_date > $session.user_date and start_date < $session.user_date
           then
-           dats_days_between(start_date, $session.user_date)
+           dats_days_between(start_date, $session.user_date) /* TODO: Keine Ahnung, wie man hier noch den Kalendar beachtet */
           when end_date < $session.user_date and start_date < $session.user_date
           then
             vacation_days

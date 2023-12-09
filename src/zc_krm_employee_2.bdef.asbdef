@@ -9,8 +9,8 @@ define behavior for ZC_KRM_EMPLOYEE_2 //alias <alias_name>
 define behavior for ZC_KRM_VACREQUEST_2 //alias <alias_name>
 {
 
-  //use action DeclineVacationRequest;
-  //use action ApproveVacationRequest;
+  use action DeclineVacationRequest;
+  use action ApproveVacationRequest;
 
   use association _applicant;
   use association _approver;

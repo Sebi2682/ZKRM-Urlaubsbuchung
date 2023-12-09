@@ -1,4 +1,4 @@
-CLASS zcm_krm_vacrequest DEFINITION public
+CLASS zcm_krm_vacrequest DEFINITION PUBLIC
   INHERITING FROM cx_static_check FINAL CREATE PUBLIC.
 
   PUBLIC SECTION.
@@ -10,10 +10,50 @@ CLASS zcm_krm_vacrequest DEFINITION public
     " Message Constants
 
     CONSTANTS:
+      BEGIN OF vacrequest_decline,
+        msgid TYPE symsgid      VALUE 'Z_KRM_VACREQUEST',
+        msgno TYPE symsgno      VALUE '001',
+        attr1 TYPE scx_attrname VALUE 'Comment',
+        attr2 TYPE scx_attrname VALUE '',
+        attr3 TYPE scx_attrname VALUE '',
+        attr4 TYPE scx_attrname VALUE '',
+      END OF vacrequest_decline.
+
+    CONSTANTS:
+      BEGIN OF vacrequest_already_declined,
+        msgid TYPE symsgid      VALUE 'Z_KRM_VACREQUEST',
+        msgno TYPE symsgno      VALUE '002',
+        attr1 TYPE scx_attrname VALUE 'Comment',
+        attr2 TYPE scx_attrname VALUE '',
+        attr3 TYPE scx_attrname VALUE '',
+        attr4 TYPE scx_attrname VALUE '',
+      END OF vacrequest_already_declined.
+
+    CONSTANTS:
+      BEGIN OF vacrequest_approved,
+        msgid TYPE symsgid      VALUE 'Z_KRM_VACREQUEST',
+        msgno TYPE symsgno      VALUE '003',
+        attr1 TYPE scx_attrname VALUE 'Comment',
+        attr2 TYPE scx_attrname VALUE '',
+        attr3 TYPE scx_attrname VALUE '',
+        attr4 TYPE scx_attrname VALUE '',
+      END OF vacrequest_approved.
+
+    CONSTANTS:
+      BEGIN OF vacrequest_already_approved,
+        msgid TYPE symsgid      VALUE 'Z_KRM_VACREQUEST',
+        msgno TYPE symsgno      VALUE '004',
+        attr1 TYPE scx_attrname VALUE 'Comment',
+        attr2 TYPE scx_attrname VALUE '',
+        attr3 TYPE scx_attrname VALUE '',
+        attr4 TYPE scx_attrname VALUE '',
+      END OF vacrequest_already_approved.
+
+    CONSTANTS:
       BEGIN OF vacrequest_endbeforestart,
         msgid TYPE symsgid      VALUE 'Z_KRM_VACREQUEST',
         msgno TYPE symsgno      VALUE '005',
-        attr1 TYPE scx_attrname VALUE 'EndDate',
+        attr1 TYPE scx_attrname VALUE 'Comment',
         attr2 TYPE scx_attrname VALUE '',
         attr3 TYPE scx_attrname VALUE '',
         attr4 TYPE scx_attrname VALUE '',
@@ -23,7 +63,7 @@ CLASS zcm_krm_vacrequest DEFINITION public
       BEGIN OF vacrequest_novacationleft,
         msgid TYPE symsgid      VALUE 'Z_KRM_VACREQUEST',
         msgno TYPE symsgno      VALUE '006',
-        attr1 TYPE scx_attrname VALUE 'vacation_days',
+        attr1 TYPE scx_attrname VALUE 'Comment',
         attr2 TYPE scx_attrname VALUE '',
         attr3 TYPE scx_attrname VALUE '',
         attr4 TYPE scx_attrname VALUE '',
@@ -33,23 +73,21 @@ CLASS zcm_krm_vacrequest DEFINITION public
       BEGIN OF vacrequest_startdatepast,
         msgid TYPE symsgid      VALUE 'Z_KRM_VACREQUEST',
         msgno TYPE symsgno      VALUE '007',
-        attr1 TYPE scx_attrname VALUE 'vacation_days',
+        attr1 TYPE scx_attrname VALUE 'Comment',
         attr2 TYPE scx_attrname VALUE '',
         attr3 TYPE scx_attrname VALUE '',
         attr4 TYPE scx_attrname VALUE '',
       END OF vacrequest_startdatepast.
 
     " Attributs
-    DATA vacation_days TYPE Z_krm_vacation_days.
-    DATA EndDate       TYPE z_krm_end_date.
+    DATA Comment TYPE z_krm_comment.
 
     " Constructor
     METHODS constructor
-      IMPORTING severity      TYPE if_abap_behv_message=>t_severity DEFAULT if_abap_behv_message=>severity-error
-                textid        LIKE if_t100_message=>t100key         DEFAULT if_t100_message=>default_textid
-                !previous     LIKE previous                         OPTIONAL
-                vacation_days TYPE Z_krm_vacation_days              OPTIONAL
-                EndDate       TYPE z_krm_end_date                   OPTIONAL.
+      IMPORTING severity  TYPE if_abap_behv_message=>t_severity DEFAULT if_abap_behv_message=>severity-error
+                textid    LIKE if_t100_message=>t100key         DEFAULT if_t100_message=>default_textid
+                !previous LIKE previous                         OPTIONAL
+                Comment   TYPE z_krm_comment                   OPTIONAL.
 
   PROTECTED SECTION.
 
@@ -63,8 +101,7 @@ CLASS zcm_krm_vacrequest IMPLEMENTATION.
 
     if_t100_message~t100key = textid.
     if_abap_behv_message~m_severity = severity.
-    me->vacation_days = vacation_days.
-    me->EndDate       = EndDate.
+    me->comment = comment.
   ENDMETHOD.
 
 ENDCLASS.

@@ -1,0 +1,5 @@
+@EndUserText.label: 'Employee 2 Service Definition'
+define service ZUI_KRM_EMPLOYEE2 {
+  expose ZC_KRM_EMPLOYEE_2;
+  expose ZC_KRM_VACREQUEST_2 as VacationRequests;
+}

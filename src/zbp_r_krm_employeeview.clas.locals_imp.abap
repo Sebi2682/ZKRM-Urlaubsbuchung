@@ -44,115 +44,63 @@ CLASS lhc_vacrequest IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD ApproveVacationRequest.
-        "DATA message TYPE REF TO zcm_ceo_lrequest.
+    DATA message TYPE REF TO zcm_krm_vacrequest.
 
     " Read Leave Request
     READ ENTITY IN LOCAL MODE zr_krm_vacrequest
-        FIELDS ( Status RequestComment )
-        WITH CORRESPONDING #( keys )
-        RESULT DATA(vacrequests).
+         FIELDS ( Status RequestComment )
+         WITH CORRESPONDING #( keys )
+         RESULT DATA(vacrequests).
 
     " Process Leave Request
-    LOOP AT vacrequests REFERENCE INTO DATA(vacrequest). " foreach quasi
+    LOOP AT vacrequests REFERENCE INTO DATA(vacrequest).
 
       " Validate State and Create Error Message
       IF vacrequest->Status = 'D'.
-   "     message = NEW zcm_ceo_lrequest(
-    "        textid = zcm_ceo_lrequest=>lrequest_already_declined
-     "       severity = if_abap_behv_message=>severity-error
-      "      remark  = leaverequest->Remark
-       " ).
-        "APPEND VALUE #( %tky = leaverequest->%tky %msg = message ) TO reported-leaverequest.
-        "APPEND VALUE #( %tky = leaverequest->%tky ) TO failed-leaverequest.
+        message = NEW zcm_krm_vacrequest( textid   = zcm_krm_vacrequest=>vacrequest_already_declined
+                                          severity = if_abap_behv_message=>severity-error
+                                          comment  = vacrequest->Requestcomment ).
+        APPEND VALUE #( %tky = vacrequest->%tky
+                        %msg = message ) TO reported-vacrequest.
+        APPEND VALUE #( %tky = vacrequest->%tky ) TO failed-vacrequest.
         DELETE vacrequests INDEX sy-tabix.
         CONTINUE.
       ENDIF.
 
       IF vacrequest->Status = 'A'.
- "       message = NEW zcm_ceo_lrequest(
-  "          textid = zcm_ceo_lrequest=>    "DATA message TYPE REF TO zcm_ceo_lrequest.
-
-    " Read Leave Request
-    READ ENTITY IN LOCAL MODE zr_krm_vacrequest
-        FIELDS ( Status RequestComment )
-        WITH CORRESPONDING #( keys )
-        RESULT DATA(vacrequests1).
-
-    " Process Leave Request
-    LOOP AT vacrequests REFERENCE INTO DATA(vacrequest1). " foreach quasi
-
-      " Validate State and Create Error Message
-      IF vacrequest->Status = 'D'.
-   "     message = NEW zcm_ceo_lrequest(
-    "        textid = zcm_ceo_lrequest=>lrequest_already_declined
-     "       severity = if_abap_behv_message=>severity-error
-      "      remark  = leaverequest->Remark
-       " ).
-        "APPEND VALUE #( %tky = leaverequest->%tky %msg = message ) TO reported-leaverequest.
-        "APPEND VALUE #( %tky = leaverequest->%tky ) TO failed-leaverequest.
+        message = NEW zcm_krm_vacrequest( textid   = zcm_krm_vacrequest=>vacrequest_already_approved
+                                          severity = if_abap_behv_message=>severity-error
+                                          comment  = vacrequest->requestcomment ).
+        APPEND VALUE #( %tky = vacrequest->%tky
+                        %msg = message ) TO reported-vacrequest.
+        APPEND VALUE #( %tky = vacrequest->%tky ) TO failed-vacrequest.
         DELETE vacrequests INDEX sy-tabix.
         CONTINUE.
       ENDIF.
 
-      IF vacrequest->Status = 'A'.
- "       message = NEW zcm_ceo_lrequest(
-  "          textid = zcm_ceo_lrequest=>lrequest_already_approved
-   "         severity = if_abap_behv_message=>severity-error
-    "        remark  = leaverequest->Remark
-     "   ).
-      "  APPEND VALUE #( %tky = leaverequest->%tky %msg = message ) TO reported-leaverequest.
-       " APPEND VALUE #( %tky = leaverequest->%tky ) TO failed-leaverequest.
-        DELETE vacrequests INDEX sy-tabix.
-        CONTINUE.
-      ENDIF.
-
-      " Set State to D und Create Success Message
-      vacrequest->Status = 'D'.
- "     message = NEW zcm_ceo_lrequest(
-  "          textid = zcm_ceo_lrequest=>"!!!!
-   "         severity = if_abap_behv_message=>severity-success
-    "        remark = leaverequest->Remark
-     "   ).
-      "APPEND VALUE #( %tky = leaverequest->%tky %msg = message ) TO reported-leaverequest.
-    ENDLOOP.
-
-    " Modify Leave Request
-    MODIFY ENTITY IN LOCAL MODE zr_krm_vacrequest
-        UPDATE FIELDS ( Status )
-        WITH VALUE #( FOR lr IN vacrequests ( %tky = lr-%tky Status = lr-Status ) ).
-
-    " Set Result
-    result = VALUE #( FOR lr IN vacrequests ( %tky = lr-%tky %param = lr ) ).
-   "         severity = if_abap_behv_message=>severity-error
-    "        remark  = leaverequest->Remark
-     "   ).
-      "  APPEND VALUE #( %tky = leaverequest->%tky %msg = message ) TO reported-leaverequest.
-       " APPEND VALUE #( %tky = leaverequest->%tky ) TO failed-leaverequest.
-        DELETE vacrequests INDEX sy-tabix.
-        CONTINUE.
-      ENDIF.
-
-      " Set State to D und Create Success Message
+      " Set State to A und Create Success Message
       vacrequest->Status = 'A'.
- "     message = NEW zcm_ceo_lrequest(
-  "          textid = zcm_ceo_lrequest=>lrequest_decline
-   "         severity = if_abap_behv_message=>severity-success
-    "        remark = leaverequest->Remark
-     "   ).
-      "APPEND VALUE #( %tky = leaverequest->%tky %msg = message ) TO reported-leaverequest.
+           message = NEW zcm_krm_vacrequest(
+                textid = zcm_krm_vacrequest=>vacrequest_approved
+               severity = if_abap_behv_message=>severity-success
+              comment = vacrequest->requestcomment
+         ).
+       APPEND VALUE #( %tky = vacrequest->%tky %msg = message ) TO reported-vacrequest.
     ENDLOOP.
 
     " Modify Leave Request
     MODIFY ENTITY IN LOCAL MODE zr_krm_vacrequest
-        UPDATE FIELDS ( Status )
-        WITH VALUE #( FOR lr IN vacrequests ( %tky = lr-%tky Status = lr-Status ) ).
+           UPDATE FIELDS ( Status )
+           WITH VALUE #( FOR lr IN vacrequests
+                         ( %tky = lr-%tky Status = lr-Status ) ).
 
     " Set Result
-    result = VALUE #( FOR lr IN vacrequests ( %tky = lr-%tky %param = lr ) ).
+    result = VALUE #( FOR lr IN vacrequests
+                      ( %tky = lr-%tky %param = lr ) ).
   ENDMETHOD.
 
   METHOD DeclineVacationRequest.
-    "DATA message TYPE REF TO zcm_ceo_lrequest.
+    DATA message TYPE REF TO zcm_krm_vacrequest.
 
     " Read Leave Request
     READ ENTITY IN LOCAL MODE zr_krm_vacrequest
@@ -161,41 +109,41 @@ CLASS lhc_vacrequest IMPLEMENTATION.
         RESULT DATA(vacrequests).
 
     " Process Leave Request
-    LOOP AT vacrequests REFERENCE INTO DATA(vacrequest). " foreach quasi
+    LOOP AT vacrequests REFERENCE INTO DATA(vacrequest).
 
       " Validate State and Create Error Message
       IF vacrequest->Status = 'D'.
-   "     message = NEW zcm_ceo_lrequest(
-    "        textid = zcm_ceo_lrequest=>lrequest_already_declined
-     "       severity = if_abap_behv_message=>severity-error
-      "      remark  = leaverequest->Remark
-       " ).
-        "APPEND VALUE #( %tky = leaverequest->%tky %msg = message ) TO reported-leaverequest.
-        "APPEND VALUE #( %tky = leaverequest->%tky ) TO failed-leaverequest.
+       message = NEW zcm_krm_vacrequest(
+           textid = zcm_krm_vacrequest=>vacrequest_already_declined
+            severity = if_abap_behv_message=>severity-error
+            comment  = vacrequest->Requestcomment
+        ).
+        APPEND VALUE #( %tky = vacrequest->%tky %msg = message ) TO reported-vacrequest.
+        APPEND VALUE #( %tky = vacrequest->%tky ) TO failed-vacrequest.
         DELETE vacrequests INDEX sy-tabix.
         CONTINUE.
       ENDIF.
 
       IF vacrequest->Status = 'A'.
- "       message = NEW zcm_ceo_lrequest(
-  "          textid = zcm_ceo_lrequest=>lrequest_already_approved
-   "         severity = if_abap_behv_message=>severity-error
-    "        remark  = leaverequest->Remark
-     "   ).
-      "  APPEND VALUE #( %tky = leaverequest->%tky %msg = message ) TO reported-leaverequest.
-       " APPEND VALUE #( %tky = leaverequest->%tky ) TO failed-leaverequest.
+        message = NEW zcm_krm_vacrequest(
+            textid = zcm_krm_vacrequest=>vacrequest_already_approved
+            severity = if_abap_behv_message=>severity-error
+            comment  = vacrequest->Requestcomment
+        ).
+        APPEND VALUE #( %tky = vacrequest->%tky %msg = message ) TO reported-vacrequest.
+        APPEND VALUE #( %tky = vacrequest->%tky ) TO failed-vacrequest.
         DELETE vacrequests INDEX sy-tabix.
         CONTINUE.
       ENDIF.
 
       " Set State to D und Create Success Message
       vacrequest->Status = 'D'.
- "     message = NEW zcm_ceo_lrequest(
-  "          textid = zcm_ceo_lrequest=>lrequest_decline
-   "         severity = if_abap_behv_message=>severity-success
-    "        remark = leaverequest->Remark
-     "   ).
-      "APPEND VALUE #( %tky = leaverequest->%tky %msg = message ) TO reported-leaverequest.
+        message = NEW zcm_krm_vacrequest(
+           textid = zcm_krm_vacrequest=>vacrequest_decline
+           severity = if_abap_behv_message=>severity-success
+           comment = vacrequest->Requestcomment
+        ).
+      APPEND VALUE #( %tky = vacrequest->%tky %msg = message ) TO reported-vacrequest.
     ENDLOOP.
 
     " Modify Leave Request
@@ -222,7 +170,7 @@ CLASS lhc_vacrequest IMPLEMENTATION.
                            Status = 'R' ) ).
   ENDMETHOD.
 
-  METHOD ValidateDates. "TODO: Methode wird noch immer nicht aufgerufen, stattdessen runtime error keine Ahnung warum
+  METHOD ValidateDates.
       DATA message TYPE REF TO zcm_krm_vacrequest.
       DATA(lo_context_info) = NEW cl_abap_context_info( ).
       DATA(lv_current_date) = lo_context_info->get_system_date( ).
@@ -237,14 +185,16 @@ CLASS lhc_vacrequest IMPLEMENTATION.
     LOOP AT vacrequests INTO DATA(vacrequest).
       " Validate Dates and Create Error Message
       IF vacrequest-EndDate < vacrequest-startDate.
-        message = NEW zcm_krm_vacrequest( textid = zcm_krm_vacrequest=>vacrequest_endbeforestart ).
+        message = NEW zcm_krm_vacrequest( textid = zcm_krm_vacrequest=>vacrequest_endbeforestart
+        severity = if_abap_behv_message=>severity-error ).
         APPEND VALUE #( %tky = vacrequest-%tky
                         %msg = message ) TO reported-vacrequest.
         APPEND VALUE #( %tky = vacrequest-%tky ) TO failed-vacrequest.
       ENDIF.
 
       IF vacrequest-startDate < lv_current_date.
-                message = NEW zcm_krm_vacrequest( textid = zcm_krm_vacrequest=>vacrequest_startdatepast ).
+                message = NEW zcm_krm_vacrequest( textid = zcm_krm_vacrequest=>vacrequest_startdatepast
+                severity = if_abap_behv_message=>severity-error ).
         APPEND VALUE #( %tky = vacrequest-%tky
                         %msg = message ) TO reported-vacrequest.
         APPEND VALUE #( %tky = vacrequest-%tky ) TO failed-vacrequest.
@@ -264,21 +214,24 @@ CLASS lhc_vacrequest IMPLEMENTATION.
 
     " Process Travels
     LOOP AT vacrequests INTO DATA(vacrequest).
+      TRY.
+          DATA(startdate) = vacrequest-startdate.
+          startdate -= 1.
+          DATA(calendar) = cl_fhc_calendar_runtime=>create_factorycalendar_runtime( 'SAP_DE_BW' ).
+          DATA(working_days) = calendar->calc_workingdays_between_dates( iv_start = startdate
+                                                                         iv_end   = vacrequest-EndDate ).
+        CATCH cx_fhc_runtime.
+      ENDTRY.
 
-      DATA(startdate) = vacrequest-startdate.
-      startdate -= 1.
-      DATA(calendar) = cl_fhc_calendar_runtime=>create_factorycalendar_runtime( 'SAP_DE_BW' ).
-      DATA(working_days) = calendar->calc_workingdays_between_dates( iv_start = startdate
-                                                                     iv_end   = vacrequest-EndDate ).
-
-      select from zr_krm_employeeview
+      SELECT FROM zr_krm_employeeview
            FIELDS  AvailableVacationDays
            WHERE id = @vacrequest-Applicant
-           into @DATA(availablevacationdays).
-      endselect.
+           INTO @DATA(availablevacationdays).
+      ENDSELECT.
 
       IF AvailableVacationDays < working_days.
-        message = NEW zcm_krm_vacrequest( textid = zcm_krm_vacrequest=>vacrequest_novacationleft ).
+        message = NEW zcm_krm_vacrequest( textid   = zcm_krm_vacrequest=>vacrequest_novacationleft
+                                          severity = if_abap_behv_message=>severity-error ).
         APPEND VALUE #( %tky = vacrequest-%tky
                         %msg = message ) TO reported-vacrequest.
         APPEND VALUE #( %tky = vacrequest-%tky ) TO failed-vacrequest.
@@ -297,8 +250,11 @@ CLASS lhc_vacrequest IMPLEMENTATION.
 
     DATA(startdate) = vacrequest-startdate.
     startdate = startdate - 1.
+    try.
     DATA(calendar) = cl_fhc_calendar_runtime=>create_factorycalendar_runtime( 'SAP_DE_BW' ).
     DATA(working_days) = calendar->calc_workingdays_between_dates( iv_start = startdate iv_end = vacrequest-EndDate ).
+    catch cx_fhc_runtime.
+    endtry.
 
     MODIFY ENTITY IN LOCAL MODE zr_krm_vacrequest
            UPDATE FIELDS ( Vacationdays )

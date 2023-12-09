@@ -86,8 +86,8 @@ authorization dependent by _applicant
   action DeclineVacationRequest result [1] $self;
   action ApproveVacationRequest result [1] $self;
 
-  validation ValidateDates on save { create; }
-  validation ValidateVacDays on save { create; }
+  validation ValidateVacDays on save { create; update; }
+  validation ValidateDates on save { create; update; }
 
   determination DetermineStatus on modify { field approver, startdate, enddate, RequestComment;}
   determination DetermineVacationDays on modify { field startdate, enddate; }
